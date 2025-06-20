@@ -1,24 +1,21 @@
+// pages/_app.js
 import '../styles/globals.css'
 import Header from '../components/Header'
 import WhatsAppButton from '../components/WhatsAppButton'
-import HeroSection from '../components/HeroSection'
-import QuickContactForm from '../components/QuickContactForm'
-import PopularAttractionsCarousel from '../components/PopularAttractionsCarousel'
-import AdditionalServices from '../components/AdditionalServices'
-import PackagesSection from '../components/PackagesSection'
-import AttractionFamilies from '../components/AttractionFamilies'
-
+// import Footer from '../components/Footer' // אם יש
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 export default function MyApp({ Component, pageProps }) {
+  const router = useRouter()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [router.asPath])
+
   return (
     <>
       <Header />
-      <HeroSection/>
-      <QuickContactForm/>
-      <PopularAttractionsCarousel/>
-      <AdditionalServices/>
-      <PackagesSection/>
-      <AttractionFamilies/>
       <Component {...pageProps} />
       <WhatsAppButton />
     </>

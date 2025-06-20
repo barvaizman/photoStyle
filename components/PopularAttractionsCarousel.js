@@ -2,29 +2,41 @@ import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { client } from '../lib/sanity/client';
+import imageUrlBuilder from '@sanity/image-url'
 
-const attractions = [
-  { title: 'חופה', image: '/images/hero/strip3.jpeg', slug: 'chuppah-attraction' },
-  { title: 'סלואו', image: '/images/hero/slow.jpeg', slug: 'slow-motion' },
-  { title: 'עמדת משקפיים', image: '/images/hero/glasses.jpeg', slug: 'glasses-booth' },
-  { title: 'עמדת צילום', image: '/images/hero/boothTree.jpeg', slug: 'photo-booth' },
-  { title: 'אותיות מעוצבות', image: '/images/hero/lettersFlower.jpeg', slug: 'decorative-letters' },
-  { title: 'תותחי עשן', image: '/images/hero/smokeColor.jpeg', slug: 'smoke-cannons' },
-  { title: 'לייזרים', image: '/images/hero/laser.jpeg', slug: 'laser-show' },
-  { title: 'תאורה', image: '/images/hero/lights.jpeg', slug: 'lighting' },
-  { title: 'היכל תורה', image: '/images/hero/hichalTora.jpeg', slug: 'torah-ark' }
-]
+const builder = imageUrlBuilder(client)
+const urlFor = (source) => builder.image(source)
 
 export default function PopularAttractionsCarousel() {
   const carouselRef = useRef(null)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [attractions, setAttractions] = useState([])
+
+  useEffect(() => {
+    const fetchAttractions = async () => {
+      const data = await client.fetch(`*[_type == "popularAttractions"][0]{
+        attractions[]-> {
+          title,
+          slug,
+          mainImage
+        }
+      }`)
+
+      if (data?.attractions) {
+        setAttractions(data.attractions)
+      }
+    }
+
+    fetchAttractions()
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % attractions.length)
     }, 6000)
     return () => clearInterval(interval)
-  }, [])
+  }, [attractions])
 
   useEffect(() => {
     if (carouselRef.current) {
@@ -73,13 +85,13 @@ export default function PopularAttractionsCarousel() {
         >
           {attractions.map((attr, i) => (
             <Link
-              href={`/attractions/${attr.slug}`}
+              href={`/attractions/${attr.slug?.current || ''}`}
               key={i}
               className="snap-start shrink-0 w-24 sm:w-28 md:w-36 flex flex-col items-center group transition-transform hover:scale-105"
             >
               <div className="w-full aspect-square rounded-full overflow-hidden border-4 border-pink-400 shadow-[0_10px_50px_rgba(255,0,128,0.5)] transform group-hover:rotate-3 duration-500 bg-white">
                 <Image
-                  src={attr.image}
+                  src={urlFor(attr.mainImage).width(300).height(300).url()}
                   alt={attr.title}
                   width={180}
                   height={180}

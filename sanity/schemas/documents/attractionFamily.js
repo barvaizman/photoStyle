@@ -6,6 +6,12 @@ export default {
   fields: [
     { name: 'title', title: 'שם המשפחה', type: 'string' },
     {
+      name: 'mainImage',
+      title: 'תמונה ראשית',
+      type: 'image',
+      options: { hotspot: true },
+    },
+    {
       name: 'attractions',
       title: 'אטרקציות',
       type: 'array',
