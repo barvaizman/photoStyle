@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { client } from '../../lib/sanityClient'
+import { client } from '../../lib/sanity/client'
 
 export default function Reviews({ reviews }) {
   return (
