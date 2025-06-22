@@ -1,100 +1,112 @@
-import { useEffect, useState } from 'react'
+// components/HeroSection.js
+
+import { useState, useEffect } from 'react'
+import { FaWhatsapp, FaPhone, FaCamera, FaGift } from 'react-icons/fa'
+import Link from 'next/link'
 
 export default function HeroSection() {
-  const imageList = [
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [isVisible, setIsVisible] = useState(false)
+
+  const heroImages = [
     '/images/hero/bagTora.jpeg',
-    '/images/hero/boothTree.jpeg',
-    '/images/hero/fruits.jpeg',
-    '/images/hero/glasses.jpeg',
     '/images/hero/hichalTora.jpeg',
-    '/images/hero/laser.jpeg',
-    '/images/hero/lettersFlower.jpeg',
-    '/images/hero/lettersRing.jpeg',
-    '/images/hero/lights.jpeg',
-    '/images/hero/miniMi.jpeg',
-    '/images/hero/slow.jpeg',
-    '/images/hero/smokeColor.jpeg',
-    '/images/hero/strip3.jpeg',
-    '/images/hero/tora.jpeg',
+    '/images/hero/lettersRing.jpeg'
   ]
 
-  const [currentIndex, setCurrentIndex] = useState(0)
-
   useEffect(() => {
+    setIsVisible(true)
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % imageList.length)
-    }, 3500)
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length)
+    }, 5000)
     return () => clearInterval(interval)
-  }, [imageList.length])
+  }, [])
 
   return (
-    <section
-      className="relative bg-white py-20 px-4 text-center"
-        style={{
-        backgroundImage: "url('/images/hero-bg.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      {/* שכבת כהות */}
-      <div className="absolute inset-0 bg-black/40 z-0" />
-
-      {/* כרטיסייה עם תוכן */}
-      <div className="relative z-10 max-w-6xl mx-auto rounded-3xl bg-[#fff1f3]/90 border border-[#f2c5c5] shadow-[0_20px_60px_rgba(220,79,116,0.4)] backdrop-blur-md p-6 md:p-12 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 transition-all duration-500">
-
-        {/* תמונה קטנה (ימין) */}
-        <div className="w-28 md:w-44 h-28 md:h-44 border-2 border-[#ffb9c5] rounded-xl overflow-hidden shadow-xl">
-          <img
-            src={imageList[currentIndex]}
-            alt="תמונה ראשית"
-            className="w-full h-full object-cover"
+    <section className="relative h-[45vh] sm:h-[55vh] md:h-[65vh] overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-600"></div>
+      
+      {/* Background Images */}
+      <div className="absolute inset-0">
+        {heroImages.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{
+              backgroundImage: `url(${image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
           />
-        </div>
+        ))}
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/80 via-pink-600/60 to-orange-600/80"></div>
+      </div>
 
-        {/* תוכן */}
-        <div className="text-center max-w-xl flex flex-col items-center text-gray-800">
-          <h2 className="text-2xl md:text-4xl font-bold mb-3 leading-snug text-center">
-  אז למה בעצם לבחור  
-  <br className="md:hidden" />
-  <span className="block text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-[#dc4f74] via-[#ff4f73] to-[#dc4f74] text-transparent bg-clip-text mt-1 md:mt-0">
-    פוטו סטייל ?
-  </span>
-</h2>
-
-
-          <p className="text-gray-700 mb-5 text-sm md:text-lg leading-relaxed font-semibold max-w-md">
-            עם <span className="text-[#dc4f74] font-bold">ניסיון עשיר</span>, <span className="text-[#dc4f74] font-bold">ציוד חדשני</span> ואנשי מקצוע מהשורה הראשונה – נהפוך את ה<span className="underline font-bold">אירוע</span> שלכם ל־
-            <span className="text-[#ff4f73] font-bold"> בלתי נשכח</span>. הכל במקום אחד: <span className="text-[#dc4f74] font-semibold">אטרקציות</span>, <span className="text-[#dc4f74] font-semibold">צילום</span>, <span className="text-[#dc4f74] font-semibold">הפקה</span> ו־<span className="text-[#dc4f74] font-semibold">חוויה מלאה</span>.
+      {/* Content */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center">
+        <div className={`text-center px-4 sm:px-6 md:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
+          {/* Main Title - More Emphasized */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-4 sm:mb-6 md:mb-8 leading-tight drop-shadow-2xl">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 animate-pulse">
+              PhotoStyle
+            </span>
+          </h1>
+          
+          {/* Subtitle - More Bold */}
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white font-black mb-8 sm:mb-12 md:mb-16 max-w-5xl mx-auto leading-relaxed drop-shadow-2xl">
+            אטרקציות צילום מתקדמות לאירועים בלתי נשכחים
           </p>
 
-          <div className="flex flex-wrap justify-center gap-3 mb-6 text-sm">
-            {['אטרקציות', 'תמונות', 'אירועי חברה', 'בר/ת מצווה', 'חתונות'].map((tag, i) => (
-              <span
-                key={i}
-                className="px-3 py-1 rounded-full border border-[#dc4f74] text-[#dc4f74] bg-[#ffe9ef] font-medium shadow-sm"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+          {/* CTA Buttons - Smaller and redesigned */}
+          <div className="flex flex-row justify-center items-center gap-2 sm:gap-3 md:gap-4 lg:gap-6 flex-wrap mt-auto">
+            <Link 
+              href="/attractions"
+              className="group relative px-4 sm:px-5 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 text-white font-bold text-sm sm:text-base rounded-xl shadow-xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-500 overflow-hidden border-2 border-white/20 backdrop-blur-sm"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              <FaCamera className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-white/80 group-hover:scale-125 transition-transform duration-300" />
+              <span className="relative z-10 pl-6 sm:pl-7">אטרקציות צילום</span>
+            </Link>
 
-          <div className="flex flex-wrap justify-center gap-4">
-            <button className="bg-[#dc4f74] hover:bg-[#b6385d] text-white px-6 py-3 rounded-full font-bold shadow-lg transition duration-300 text-sm md:text-base">
-              קבלת הצעת מחיר
-            </button>
-            <button className="bg-[#fddcb5] hover:bg-[#f6cfa2] text-gray-900 px-6 py-3 rounded-full font-bold shadow-lg transition duration-300 text-sm md:text-base">
-              שירותים נוספים
-            </button>
-          </div>
-        </div>
+            <Link 
+              href="/packages"
+              className="group relative px-4 sm:px-5 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 text-white font-bold text-sm sm:text-base rounded-xl shadow-xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-500 overflow-hidden border-2 border-white/20 backdrop-blur-sm"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              <FaGift className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-white/80 group-hover:scale-125 transition-transform duration-300" />
+              <span className="relative z-10 pl-6 sm:pl-7">חבילות אירועים</span>
+            </Link>
 
-        {/* תמונה שמאל – רספונסיבית */}
-        <div className="hidden md:block w-44 h-44 border-2 border-[#ffb9c5] rounded-xl overflow-hidden shadow-xl">
-          <img
-            src={imageList[(currentIndex + 1) % imageList.length]}
-            alt="תמונה שנייה"
-            className="w-full h-full object-cover"
-          />
+            <a
+              href="tel:+972501234567"
+              className="group relative px-4 sm:px-5 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 text-white font-bold text-sm sm:text-base rounded-xl shadow-xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-500 overflow-hidden border-2 border-white/20 backdrop-blur-sm flex items-center justify-center gap-2"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              <FaPhone className="text-sm sm:text-base group-hover:scale-125 transition-transform duration-300 relative z-10" />
+              <span className="relative z-10">התקשר עכשיו</span>
+            </a>
+
+            <a
+              href={`https://wa.me/972501234567?text=שלום%20אני%20מעוניין%20בפרטים%20על%20האטרקציות`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative px-4 sm:px-5 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-500 via-green-600 to-green-700 text-white font-bold text-sm sm:text-base rounded-xl shadow-xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-500 overflow-hidden border-2 border-white/20 backdrop-blur-sm flex items-center justify-center gap-2"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-green-600 via-green-700 to-green-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              <FaWhatsapp className="text-sm sm:text-base group-hover:scale-125 transition-transform duration-300 relative z-10" />
+              <span className="relative z-10">ווטסאפ</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>

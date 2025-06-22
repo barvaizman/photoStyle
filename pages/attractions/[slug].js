@@ -5,6 +5,8 @@ import { PortableText } from '@portabletext/react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { FaArrowRight } from 'react-icons/fa'
+import ConnectUs from '../../components/connectUs'
 
 export async function getStaticPaths() {
   const data = await client.fetch(`*[_type == "attraction" && defined(slug.current)]{ slug }`)
@@ -43,7 +45,6 @@ export async function getStaticProps({ params }) {
 export default function AttractionPage({ attraction }) {
   const {
     title,
-    shortDescription,
     richDescription,
     price,
     mainImage,
@@ -55,133 +56,144 @@ export default function AttractionPage({ attraction }) {
   const images = [mainImage, ...validGallery]
 
   const [currentIndex, setCurrentIndex] = useState(0)
-  const nextImage = () => setCurrentIndex((prev) => (prev + 1) % images.length)
-  const prevImage = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)
+
+  const components = {
+    block: {
+      h1: ({ children }) => (
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-pink-100 text-rose-600 rounded-lg sm:rounded-xl py-2 px-3 sm:px-4 shadow-md inline-block w-fit mx-auto mb-4 sm:mb-6">
+          {children}
+        </h1>
+      ),
+      h2: ({ children }) => (
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-pink-50 text-pink-500 rounded-lg py-2 px-3 sm:px-4 shadow-sm inline-block w-fit mx-auto mb-3 sm:mb-4">
+          {children}
+        </h2>
+      ),
+      h3: ({ children }) => (
+        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold bg-pink-50 text-pink-400 rounded-lg py-1 px-2 sm:px-3 shadow-sm inline-block w-fit mx-auto mb-2 sm:mb-3">
+          {children}
+        </h3>
+      ),
+      normal: ({ children }) => (
+        <p className="text-base sm:text-lg leading-relaxed text-gray-700 mb-4 sm:mb-5">
+          {children}
+        </p>
+      ),
+    },
+  }
 
   return (
-    <main className="bg-gradient-to-b from-[#fff7fa] to-white px-4 py-10 sm:px-8 text-center sm:text-right">
-      <Head>
-        <title>{title} - אטרקציות לאירועים | PhotoStyle</title>
-        <meta name="description" content={shortDescription} />
-        <meta property="og:title" content={`${title} - אטרקציות`} />
-        <meta property="og:description" content={shortDescription} />
-        <meta property="og:image" content={mainImage?.asset?.url} />
-      </Head>
+    <>
+      <main className="bg-white text-center sm:text-right">
+        <Head>
+          <title>{title} - אטרקציות לאירועים | PhotoStyle</title>
+          <meta name="description" content={title} />
+          <meta property="og:title" content={`${title} - אטרקציות`} />
+          <meta property="og:description" content={title} />
+          <meta property="og:image" content={mainImage?.asset?.url} />
+        </Head>
 
-      {/* חזרה לדף הבית */}
-      <div className="mb-6 text-right">
-        <Link href="/" className="inline-block bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-full hover:bg-gray-300 transition">
-          ← חזרה לדף הראשי
-        </Link>
-      </div>
+        {/* Back Button */}
+        <div className="absolute top-2 sm:top-4 right-2 sm:right-4 z-20">
+          <Link href="/attractions">
+            <button className="group relative px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black text-sm sm:text-lg rounded-lg sm:rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden backdrop-blur-sm border border-white/20">
+              <FaArrowRight className="inline-block ml-1 sm:ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+              <span className="relative z-10">חזרה לאטרקציות</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </button>
+          </Link>
+        </div>
 
-      {/* תוכן עליון */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-        {/* טקסט */}
-        <div className="order-2 md:order-1 flex flex-col gap-6">
-          <motion.div
-            className="p-6 rounded-xl bg-[#fff5f5] border shadow-lg"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <h1 className="text-4xl md:text-5xl font-extrabold text-rose-500 mb-3 animate-pulse">
+        {/* תמונה ראשית עם fade חזק בשליש התחתון */}
+        <div className="relative w-full max-h-[60vh] sm:max-h-[80vh] overflow-hidden">
+          <Image
+            src={mainImage?.asset?.url || mainImage?.url}
+            alt={`${title} - תמונה`}
+            layout="responsive"
+            width={1600}
+            height={600}
+            className="object-cover w-full h-auto"
+          />
+          <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-b from-transparent to-white pointer-events-none" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-3 sm:px-4">
+            <motion.h1
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white drop-shadow-[2px_2px_0_rgba(0,0,0,1)]"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            >
               {title}
-            </h1>
-            <p className="text-gray-800 text-xl font-bold">{shortDescription}</p>
-          </motion.div>
-
-          <div className="flex flex-col gap-4 items-center md:items-start">
+            </motion.h1>
             <motion.p
-              className="text-[2.6rem] font-extrabold text-yellow-500 animate-bounce text-center md:text-right"
-              initial={{ opacity: 0, y: 10 }}
+              className="mt-2 sm:mt-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-yellow-400 drop-shadow-[2px_2px_0_rgba(0,0,0,1)]"
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
             >
-              החל מ־{price}₪
+              ✨ החל מ־{price}₪ ✨
             </motion.p>
-            <Link
-              href={`https://wa.me/972501234567?text=שלום, אשמח לקבל פרטים על ${title}`}
-              target="_blank"
-              className="inline-block bg-green-700 text-white font-bold text-lg py-3 px-8 rounded-full shadow-lg hover:scale-105 hover:bg-green-800 transition"
-            >
-              📲 דברו איתנו בוואטסאפ
-            </Link>
           </div>
         </div>
 
-        {/* תמונה וקרוסלה */}
-        <div className="order-1 md:order-2 flex flex-col items-center">
-          <div className="rounded-2xl shadow-[0_15px_60px_rgba(0,0,0,0.25)] overflow-hidden transition duration-500">
-            <Image
-              src={images[currentIndex]?.asset?.url || images[currentIndex]?.url}
-              alt={`${title} - תמונה`}
-              width={800}
-              height={500}
-              className="w-full h-auto object-cover"
-            />
+        {/* קרוסלת גלריה נפרדת */}
+        {validGallery.length > 0 && (
+          <div className="flex overflow-x-auto gap-2 sm:gap-3 mt-6 sm:mt-8 py-2 px-3 sm:px-4 justify-center">
+            {validGallery.map((img, i) => (
+              <Image
+                key={i}
+                src={img?.asset?.url || img?.url}
+                alt={`${title} גלריה ${i + 1}`}
+                width={150}
+                height={90}
+                className="rounded-lg sm:rounded-xl cursor-pointer transition hover:scale-105 shadow-lg"
+              />
+            ))}
           </div>
+        )}
 
-          {images.length > 1 && (
-            <>
-              <div className="flex justify-center gap-6 mt-4">
-                <button onClick={prevImage} className="text-2xl text-pink-600 hover:text-pink-800 transition">❮</button>
-                <button onClick={nextImage} className="text-2xl text-pink-600 hover:text-pink-800 transition">❯</button>
-              </div>
-              <div className="flex overflow-x-auto gap-3 mt-4 py-2 px-1 justify-center">
-                {images.map((img, i) => (
-                  <Image
-                    key={i}
-                    src={img?.asset?.url || img?.url}
-                    alt={`${title} ${i + 1}`}
-                    width={100}
-                    height={100}
-                    className={`rounded-xl cursor-pointer transition hover:scale-105 border-2 ${i === currentIndex ? 'border-pink-500' : 'border-transparent'}`}
-                    onClick={() => setCurrentIndex(i)}
-                  />
+        {/* תיאור עשיר */}
+        <div className="text-center mt-12 sm:mt-16 max-w-4xl sm:max-w-5xl mx-auto px-3 sm:px-4">
+          <PortableText value={richDescription} components={components} />
+        </div>
+
+        {/* אטרקציות דומות */}
+        {related?.length > 0 && (
+          <section className="relative py-12 sm:py-16 md:py-20 px-3 sm:px-4 md:px-6 bg-gradient-to-b from-[#7e28f2] via-[#d400a7] to-[#ff6b00] mt-12 sm:mt-16 md:mt-20">
+            <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white via-white/80 to-transparent pointer-events-none z-0" />
+
+            <div className="relative z-10">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-center text-white mb-8 sm:mb-12 md:mb-14 drop-shadow-2xl tracking-tight">
+                אטרקציות נוספות שאולי תאהבו
+              </h2>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5 max-w-7xl mx-auto">
+                {related.map((item) => (
+                  <Link
+                    key={item.slug.current}
+                    href={`/attractions/${item.slug.current}`}
+                    className="relative group rounded-lg sm:rounded-xl shadow-xl overflow-hidden transition hover:scale-105 bg-white"
+                  >
+                    <Image
+                      src={item.mainImage.asset.url}
+                      alt={item.title}
+                      width={400}
+                      height={400}
+                      className="object-cover w-full h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48"
+                    />
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 flex items-center justify-center transition">
+                      <h4 className="text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold text-center px-2 drop-shadow-2xl">
+                        {item.title}
+                      </h4>
+                    </div>
+                  </Link>
                 ))}
               </div>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* תיאור מעוצב */}
-      <div className="prose text-center mt-16 max-w-5xl mx-auto text-gray-800 prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h1:text-rose-600 prose-h2:text-pink-500 prose-h3:text-pink-400 prose-h1:font-extrabold prose-h2:font-bold prose-h3:font-bold prose-p:text-lg prose-p:font-semibold prose-p:text-gray-700 prose-h1:font-[sans-serif] prose-h2:font-[sans-serif] prose-h3:font-[sans-serif]">
-        <PortableText value={richDescription} />
-      </div>
-
-      {/* אטרקציות דומות */}
-      {related?.length > 0 && (
-  <section className="py-20 px-4 sm:px-6 bg-gradient-to-b from-rose-200 to-pink-100 mt-20">
-    <h2 className="text-4xl font-extrabold text-center text-pink-700 mb-12 drop-shadow-lg">
-      🎉 אטרקציות נוספות שאולי תאהבו
-    </h2>
-
-    <div className="grid grid-cols-2 lg:grid-cols-5 gap-5 max-w-7xl mx-auto">
-      {related.map((item) => (
-        <Link
-          key={item.slug.current}
-          href={`/attractions/${item.slug.current}`}
-          className="relative group rounded-xl shadow-xl overflow-hidden transition hover:scale-105 bg-white"
-        >
-          <Image
-            src={item.mainImage.asset.url}
-            alt={item.title}
-            width={400}
-            height={400}
-            className="object-cover w-full h-40 sm:h-44 md:h-48 lg:h-52"
-          />
-          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 flex items-center justify-center transition">
-            <h4 className="text-white text-xl sm:text-2xl font-extrabold text-center px-2 drop-shadow-2xl">
-              {item.title}
-            </h4>
-          </div>
-        </Link>
-      ))}
-    </div>
-  </section>
-)}
-
-    
-    </main>
+            </div>
+          </section>
+        )}
+      </main>
+      
+      <ConnectUs />
+    </>
   )
 }

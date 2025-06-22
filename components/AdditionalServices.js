@@ -1,79 +1,173 @@
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { FaCamera, FaVideo, FaLightbulb, FaMusic, FaCrown, FaStar } from 'react-icons/fa'
+import { motion } from 'framer-motion'
 
 export default function AdditionalServices() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const services = [
+    {
+      icon: FaCamera,
+      title: 'צילום מקצועי',
+      description: 'צילום איכותי עם ציוד מתקדם לכל סוגי האירועים',
+      slug: 'professional-photography',
+      price: 1500
+    },
+    {
+      icon: FaVideo,
+      title: 'הפקת וידאו',
+      description: 'הפקת סרטוני אירועים מקצועיים עם עריכה מתקדמת',
+      slug: 'video-production',
+      price: 2500
+    },
+    {
+      icon: FaLightbulb,
+      title: 'תאורה מתקדמת',
+      description: 'מערכות תאורה מתקדמות ליצירת אווירה מושלמת',
+      slug: 'advanced-lighting',
+      price: 800
+    },
+    {
+      icon: FaMusic,
+      title: 'הגברה ומוזיקה',
+      description: 'מערכות הגברה איכותיות ומוזיקת רקע מותאמת',
+      slug: 'sound-system',
+      price: 1200
+    },
+    {
+      icon: FaCrown,
+      title: 'שירות VIP',
+      description: 'שירות פרימיום עם תשומת לב אישית לכל פרט',
+      slug: 'vip-service',
+      price: 3000
+    },
+    {
+      icon: FaStar,
+      title: 'חבילות מותאמות',
+      description: 'חבילות מותאמות אישית לכל סוגי האירועים',
+      slug: 'custom-packages',
+      price: 2000
+    }
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 100,
+      },
+    },
+  }
+
   return (
-    <section className="bg-gradient-to-b from-white to-gray-50 py-16 px-4">
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 overflow-visible">
-        <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-12 leading-tight flex justify-center items-center gap-3">
-          <span className="text-xl sm:text-2xl">✨</span>
-          <span>השירותים הנוספים שלנו</span>
-          <span className="text-xl sm:text-2xl">✨</span>
-        </h2>
+    <section className="py-16 sm:py-20 bg-gradient-to-br from-gray-50 via-white to-purple-50 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 2 }}
+          className="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-200/30 rounded-full blur-3xl"
+        ></motion.div>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 2, delay: 0.5 }}
+          className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-pink-200/30 rounded-full blur-3xl"
+        ></motion.div>
+      </div>
 
-        <div className="grid grid-cols-3 gap-3 sm:gap-5 md:gap-8">
-          {/* כרטיס 1 */}
-          <div className="bg-white rounded-3xl shadow-2xl hover:shadow-[0_10px_40px_rgba(0,0,0,0.2)] transition-all duration-300 p-3 sm:p-4 flex flex-col items-center text-center h-full min-w-0">
-            <div className="bg-blue-100/50 rounded-full p-3 shadow-md mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M16.862 3.487a1.5 1.5 0 0 1 2.121 2.121l-10.5 10.5a1.5 1.5 0 0 1-.53.354l-4.5 1.5a.75.75 0 0 1-.95-.95l1.5-4.5a1.5 1.5 0 0 1 .354-.53l10.5-10.5Z" />
-              </svg>
-            </div>
-            <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1 leading-tight">
-              עיצוב הזמנות & תפריטים
-            </h3>
-            <p className="text-xs text-gray-700 leading-tight mb-4">
-              עיצובים מיוחדים להזמנות, תפריטים ועוד
-              <span className="hidden sm:inline">, מדבקות ושלטים – בסטייל שמותאם אישית ומשאיר רושם.</span>
-            </p>
-            <div className="mt-auto">
-              <Link href="/design" className="text-xs font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-full px-3 py-1 transition duration-300">
-                פרטים
-              </Link>
-            </div>
-          </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12 sm:mb-16"
+        >
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 sm:mb-6">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600">
+              שירותים נוספים
+            </span>
+          </h2>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            מגוון שירותים מקצועיים להשלמת חווית האירוע המושלמת
+          </p>
+        </motion.div>
 
-          {/* כרטיס 2 */}
-          <div className="bg-white rounded-3xl shadow-2xl hover:shadow-[0_10px_40px_rgba(0,0,0,0.2)] transition-all duration-300 p-3 sm:p-4 flex flex-col items-center text-center h-full min-w-0">
-            <div className="bg-green-100/50 rounded-full p-3 shadow-md mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1 leading-tight">
-              אישורי הגעה לאירועים
-            </h3>
-            <p className="text-xs text-gray-700 leading-tight mb-4">
-              מערכת אישורי הגעה חכמה ב-SMS וואטסאפ ושיחות
-              <span className="hidden sm:inline">, שיחות ווואטסאפ – כך תדעו בדיוק מי מגיע וכמה להזמין.</span>
-            </p>
-            <div className="mt-auto">
-              <Link href="/confirmations" className="text-xs font-semibold text-white bg-green-500 hover:bg-green-600 rounded-full px-3 py-1 transition duration-300">
-                פרטים
-              </Link>
-            </div>
-          </div>
+        {/* Services Grid */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+        >
+          {services.map((service, index) => {
+            const Icon = service.icon
+            return (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className="group relative bg-white rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 overflow-hidden border border-gray-100 hover:border-purple-200"
+              >
+                <Link href={`/services/${service.slug}`} className="block">
+                  {/* Background gradient on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Icon */}
+                  <div className="relative z-10 mb-6">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-500">
+                      <Icon className="w-8 h-8 sm:w-10 sm:h-10" />
+                    </div>
+                  </div>
 
-          {/* כרטיס 3 */}
-          <div className="bg-white rounded-3xl shadow-2xl hover:shadow-[0_10px_40px_rgba(0,0,0,0.2)] transition-all duration-300 p-3 sm:p-4 flex flex-col items-center text-center h-full min-w-0">
-            <div className="bg-pink-100/50 rounded-full p-3 shadow-md mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-pink-500" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M9 19V6h11v2h-9v11H9zM5 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-              </svg>
-            </div>
-            <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1 leading-tight">
-              שירותי דיג'יי & מוזיקה
-            </h3>
-            <p className="text-xs text-gray-700 leading-tight mb-4">
-              דיג'יים מקצועיים מהשורה הראשונה במדינה
-              <span className="hidden sm:inline">, סאונד מדויק ותאורה עוצמתית – כדי שהרחבה שלכם תישאר מלאה כל הלילה.</span>
-            </p>
-            <div className="mt-auto">
-              <Link href="/dj-services" className="text-xs font-semibold text-white bg-pink-500 hover:bg-pink-600 rounded-full px-3 py-1 transition duration-300">
-                פרטים
-              </Link>
-            </div>
-          </div>
-        </div>
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-purple-600 transition-colors duration-300">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4">
+                      {service.description}
+                    </p>
+                    {service.price && (
+                      <div className="text-right">
+                        <span className="text-lg sm:text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500">
+                          החל מ־₪{service.price}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Floating elements */}
+                  <div className="absolute top-4 right-4 w-2 h-2 bg-purple-400 rounded-full opacity-0 group-hover:opacity-70 animate-ping"></div>
+                  <div className="absolute bottom-4 left-4 w-1.5 h-1.5 bg-pink-400 rounded-full opacity-0 group-hover:opacity-70 animate-ping delay-300"></div>
+                  
+                  {/* Hover glow effect */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
+                </Link>
+              </motion.div>
+            )
+          })}
+        </motion.div>
       </div>
     </section>
   );

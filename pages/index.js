@@ -5,6 +5,7 @@ import PopularAttractionsCarousel from '../components/PopularAttractionsCarousel
 import AdditionalServices from '../components/AdditionalServices'
 import PackagesSection from '../components/PackagesSection'
 import AttractionFamilies from '../components/AttractionFamilies'
+import ConnectUs from '../components/connectUs'
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
         <AdditionalServices />
         <PackagesSection />
         <AttractionFamilies />
+        <ConnectUs />
       </main>
     </>
   )
