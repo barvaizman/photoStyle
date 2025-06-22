@@ -3,7 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/attractions/[slug]": "pages/attractions/[slug].js",
-  "/services/[slug]": "pages/services/[slug].js",
-  "/attractions": "pages/attractions.js",
-  "/corporate-events": "pages/corporate-events.js"
+  "/": "pages/index.js",
+  "/packages": "pages/packages.js",
+  "/attractions": "pages/attractions.js"
 }

@@ -85,9 +85,9 @@ export default function Header() {
           </div>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden relative group p-3 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 text-white shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-2 rtl:space-x-reverse">
+            className="lg:hidden relative group p-3 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 text-white shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center">
             <div className="absolute inset-0 bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-            <div className="relative z-10 flex items-center space-x-2 rtl:space-x-reverse">
+            <div className="relative z-10 flex items-center gap-3">
               {isMenuOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
               <span className="font-bold text-sm">תפריט</span>
             </div>

@@ -1,267 +1,189 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { client } from '../../lib/sanity/client'
-import { FaStar, FaQuoteLeft, FaInstagram, FaWhatsapp } from 'react-icons/fa'
+import { FaStar } from 'react-icons/fa'
 import { motion } from 'framer-motion'
+import ConnectUs from '../../components/connectUs'
 
-export default function Reviews() {
-  const [reviews, setReviews] = useState([])
-  const [loading, setLoading] = useState(true)
+// דמו לביקורות במידה ואין נתונים מהשרת
+const sampleReviews = [
+  {
+    _id: '1',
+    author: 'דנה כהן',
+    quote: 'חוויה מדהימה! הצוות היה מקצועי, התמונות יצאו מהממות והאורחים לא הפסיקו להחמיא.',
+    event_type: 'חתונה',
+    rating: 5,
+    imageUrl: '/images/reviews/1.jpg',
+  },
+  {
+    _id: '2',
+    author: 'יוסי לוי',
+    quote: 'הזמנו את השירות לבר מצווה, הילדים עפו על זה! תודה רבה!',
+    event_type: 'בר מצווה',
+    rating: 5,
+    imageUrl: '/images/reviews/2.jpg',
+  },
+  {
+    _id: '3',
+    author: 'נועה ישראלי',
+    quote: 'הכל היה מושלם, החל מהשירות ועד לאיכות התמונות. ממליצה בחום!',
+    event_type: 'אירוע חברה',
+    rating: 4,
+    imageUrl: '/images/reviews/3.jpg',
+  },
+  {
+    _id: '4',
+    author: 'רועי בן דוד',
+    quote: 'צוות מקצועי, שירות אדיב, חוויה בלתי נשכחת!',
+    event_type: 'חתונה',
+    rating: 5,
+    imageUrl: '/images/reviews/4.jpg',
+  },
+  {
+    _id: '5',
+    author: 'שיר אלון',
+    quote: 'הפתעה מושלמת לאורחים, כולם יצאו מרוצים!',
+    event_type: 'יום הולדת',
+    rating: 5,
+    imageUrl: '/images/reviews/5.jpg',
+  },
+  {
+    _id: '6',
+    author: 'איתי כהן',
+    quote: 'הזמנו לאירוע חברה, השירות היה ברמה גבוהה מאוד!',
+    event_type: 'אירוע חברה',
+    rating: 4,
+    imageUrl: '/images/reviews/6.jpg',
+  },
+]
 
-  // Sample reviews data (fallback) - only 6 reviews
-  const sampleReviews = [
-    {
-      _id: 1,
-      author: 'שרה כהן',
-      imageUrl: '/images/hero/bagTora.jpeg',
-      rating: 5,
-      event_type: 'חתונה',
-      quote: 'האטרקציות היו פשוט מדהימות! כל האורחים היו בהלם מהצילומים המתקדמים. צוות מקצועי ואיכותי ביותר.',
-      date: '2024-01-15'
-    },
-    {
-      _id: 2,
-      author: 'דוד לוי',
-      imageUrl: '/images/hero/hichalTora.jpeg',
-      rating: 5,
-      event_type: 'בר מצווה',
-      quote: 'אירוע הבר מצווה של הבן שלי היה מושלם בזכות האטרקציות. הצילומים יצאו מקצועיים ומרהיבים.',
-      date: '2024-01-10'
-    },
-    {
-      _id: 3,
-      author: 'מיכל רוזן',
-      imageUrl: '/images/hero/lettersRing.jpeg',
-      rating: 5,
-      event_type: 'יום הולדת',
-      quote: 'האטרקציות הוסיפו המון אווירה לאירוע. הצילומים היו יצירתיים ומקוריים. מומלץ בחום!',
-      date: '2024-01-08'
-    },
-    {
-      _id: 4,
-      author: 'יוסי גולדברג',
-      imageUrl: '/images/hero/fruits.jpeg',
-      rating: 5,
-      event_type: 'אירוע חברה',
-      quote: 'צוות מקצועי ואיכותי. האטרקציות היו מתקדמות וכל העובדים נהנו מאוד. שירות מעולה!',
-      date: '2024-01-05'
-    },
-    {
-      _id: 5,
-      author: 'נועה אברהם',
-      imageUrl: '/images/hero/glasses.jpeg',
-      rating: 5,
-      event_type: 'חתונה',
-      quote: 'החלטנו על PhotoStyle ברגע האחרון ולא התחרטנו. האטרקציות היו הכוכב של האירוע!',
-      date: '2024-01-03'
-    },
-    {
-      _id: 6,
-      author: 'עמית שפירא',
-      imageUrl: '/images/hero/laser.jpeg',
-      rating: 5,
-      event_type: 'בר מצווה',
-      quote: 'איכות מעולה, שירות אדיב ומקצועי. האטרקציות הוסיפו המון ערך לאירוע. תודה!',
-      date: '2023-12-28'
-    }
-  ]
+export default function Reviews({ reviews: initialReviews }) {
+  const [reviews, setReviews] = useState(initialReviews && initialReviews.length > 0 ? initialReviews : sampleReviews)
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        // Try to fetch from Sanity first - only 6 reviews
-        const query = `*[_type == "review"] | order(_createdAt desc) [0..5] {
-          _id,
-          author,
-          quote,
-          event_type,
-          rating,
-          "imageUrl": image.asset->url
-        }`
-        const data = await client.fetch(query)
-        
-        // If we got data from Sanity, use it; otherwise use sample data
-        if (data && data.length > 0) {
-          setReviews(data)
-        } else {
-          setReviews(sampleReviews)
-        }
-      } catch (error) {
-        console.error('Error fetching reviews:', error)
-        setReviews(sampleReviews)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchReviews()
-  }, [])
-
-  const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <FaStar
-        key={i}
-        className={`w-3 h-3 sm:w-4 sm:h-4 ${i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
-      />
-    ))
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 },
+    },
+  }
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100 } },
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-xl font-bold text-gray-700">טוען ביקורות...</p>
-        </div>
-      </div>
-    )
-  }
+  const renderStars = (rating) => (
+    <div className="flex justify-center mb-2">
+      {Array.from({ length: 5 }, (_, i) => (
+        <FaStar key={i} className={`w-4 h-4 sm:w-5 sm:h-5 ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`} />
+      ))}
+    </div>
+  )
 
   return (
     <>
       <Head>
-        <title>ביקורות - PhotoStyle</title>
-        <meta name="description" content="ביקורות לקוחות על האטרקציות המתקדמות שלנו" />
+        <title>המלצות לקוחות | PhotoStyle</title>
+        <meta name="description" content="המלצות לקוחות מרוצים על השירותים שלנו - צילום, אטרקציות ואירועים מושלמים." />
+        <meta name="keywords" content="המלצות לקוחות, ביקורות, צילום אירועים, אטרקציות, PhotoStyle" />
+        <meta property="og:title" content="המלצות לקוחות | PhotoStyle" />
+        <meta property="og:description" content="המלצות לקוחות מרוצים על השירותים שלנו" />
+        <meta property="og:image" content="/images/logo.png" />
+        <link rel="canonical" href="https://photostyle.co.il/reviews" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
-        {/* Hero Section */}
-        <section className="relative py-20 sm:py-32 overflow-hidden">
-          {/* Background decorative elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-tl from-orange-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          </div>
+      <div className="relative min-h-screen bg-gradient-to-b from-purple-50 via-pink-50 to-orange-50 overflow-hidden pt-24 sm:pt-32 pb-16">
+        {/* Floating Shapes */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
+          <motion.div initial={{ opacity: 0, y: -100, x: '15%' }} animate={{ opacity: 1, y: 0, x: '15%' }} transition={{ duration: 2, ease: "easeInOut" }} className="absolute top-1/4 left-[15%] w-32 h-32 bg-purple-200/50 rounded-full blur-3xl"></motion.div>
+          <motion.div initial={{ opacity: 0, y: 100, x: '85%' }} animate={{ opacity: 1, y: 0, x: '85%' }} transition={{ duration: 2, ease: "easeInOut", delay: 0.5 }} className="absolute bottom-1/3 right-[15%] w-48 h-48 bg-pink-200/50 rounded-full blur-3xl"></motion.div>
+          <motion.div initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 2, ease: "easeInOut", delay: 1 }} className="absolute top-1/2 left-[25%] w-24 h-24 bg-orange-200/50 rounded-xl blur-3xl"></motion.div>
+        </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-6 sm:mb-8">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600">
-                מה הלקוחות אומרים
-              </span>
+        <main className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="text-center mb-16"
+          >
+            <h1 className="text-4xl sm:text-6xl font-black text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600">
+              המלצות לקוחות
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8 sm:mb-12">
-              ביקורות אמיתיות מלקוחות מרוצים שחוו את האטרקציות המתקדמות שלנו
+            <p className="text-center text-lg text-gray-600 max-w-2xl mx-auto">
+              מה הלקוחות שלנו אומרים על השירותים שלנו ⭐
             </p>
-            
-            {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                <div className="text-3xl sm:text-4xl font-black text-purple-600 mb-2">500+</div>
-                <div className="text-gray-600 font-bold">אירועים מוצלחים</div>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                <div className="text-3xl sm:text-4xl font-black text-pink-600 mb-2">4.9</div>
-                <div className="text-gray-600 font-bold">דירוג ממוצע</div>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                <div className="text-3xl sm:text-4xl font-black text-orange-600 mb-2">100%</div>
-                <div className="text-gray-600 font-bold">לקוחות מרוצים</div>
-              </div>
-            </div>
-          </div>
-        </section>
+          </motion.div>
 
-        {/* Reviews Grid */}
-        <section className="pb-20 sm:pb-32">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8">
+          {reviews && reviews.length > 0 ? (
+            <motion.div
+              className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
               {reviews.map((review, index) => (
                 <motion.div
-                  key={review._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="group relative bg-white rounded-2xl p-4 sm:p-6 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 overflow-hidden"
+                  key={review._id || index}
+                  variants={itemVariants}
+                  className="group bg-white/60 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-lg overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105 h-full flex flex-col"
                 >
-                  {/* Background gradient on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  {/* Quote icon */}
-                  <div className="relative z-10 mb-4">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 rounded-xl flex items-center justify-center text-white shadow-lg">
-                      <FaQuoteLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                  {/* תמונה של צילום מסך (להוספה עתידית) */}
+                  {/*
+                  {review.screenshotUrl && (
+                    <div className="w-full h-32 sm:h-40 md:h-48 overflow-hidden flex items-center justify-center bg-gray-100">
+                      <img src={review.screenshotUrl} alt="צילום מסך של הודעת המלצה" className="object-contain w-full h-full" />
+                    </div>
+                  )}
+                  */}
+                  <div className="p-4 sm:p-6 flex-grow flex flex-col">
+                    {/* דירוג */}
+                    {renderStars(review.rating || 5)}
+                    {/* טקסט הביקורת */}
+                    <div className="flex-grow">
+                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-4 italic text-center">
+                        "{review.quote || 'שירות מעולה ומקצועי! ממליץ בחום.'}"
+                      </p>
+                    </div>
+                    {/* פרטי הלקוח */}
+                    <div className="text-center mt-auto">
+                      <h3 className="font-bold text-gray-800 text-sm sm:text-base mb-1">
+                        {review.author || 'לקוח מרוצה'}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-600">
+                        {review.event_type || 'אירוע מוצלח'}
+                      </p>
                     </div>
                   </div>
-
-                  {/* Review content */}
-                  <div className="relative z-10 mb-4">
-                    <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-3">
-                      "{review.quote}"
-                    </p>
-                    
-                    {/* Stars */}
-                    <div className="flex items-center mb-3">
-                      {renderStars(review.rating || 5)}
-                    </div>
-                  </div>
-
-                  {/* Author section */}
-                  <div className="relative z-10 flex items-center">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden mr-3">
-                      <img
-                        src={review.imageUrl}
-                        alt={review.author}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 text-sm sm:text-base">{review.author}</h4>
-                      <p className="text-xs sm:text-sm text-gray-600">{review.event_type}</p>
-                    </div>
-                  </div>
-
-                  {/* Floating elements */}
-                  <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-purple-400 rounded-full opacity-0 group-hover:opacity-70 animate-ping"></div>
-                  <div className="absolute bottom-2 left-2 w-1 h-1 bg-pink-400 rounded-full opacity-0 group-hover:opacity-70 animate-ping delay-300"></div>
+                  {/* Hover Effects */}
+                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-purple-400 rounded-xl sm:rounded-2xl transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(192,132,252,0.8)]"></div>
                 </motion.div>
               ))}
+            </motion.div>
+          ) : (
+            <div className="text-center py-16">
+              <h3 className="text-2xl font-bold text-gray-700">לא נמצאו המלצות</h3>
+              <p className="text-gray-500 mt-2">נשמח לקבל את ההמלצה הראשונה שלכם!</p>
             </div>
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section className="py-16 sm:py-20 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 sm:mb-8">
-              רוצים להיות הבאים?
-            </h2>
-            <p className="text-lg sm:text-xl text-white/90 mb-8 sm:mb-12 max-w-2xl mx-auto">
-              צרו איתנו קשר וקבלו הצעה מותאמת אישית לאטרקציות המתקדמות שלנו
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-              <a
-                href="https://wa.me/972501234567?text=שלום%20אני%20מעוניין%20בפרטים%20על%20האטרקציות"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-3 px-8 py-4 bg-green-600 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300"
-              >
-                <FaWhatsapp className="w-5 h-5" />
-                <span>ווטסאפ</span>
-              </a>
-              
-              <a
-                href="https://instagram.com/Photostyle.il"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-3 px-8 py-4 bg-white text-purple-600 font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300"
-              >
-                <FaInstagram className="w-5 h-5" />
-                <span>אינסטגרם</span>
-              </a>
-            </div>
-          </div>
-        </section>
+          )}
+        </main>
       </div>
+      <ConnectUs />
     </>
   )
 }
 
 export async function getStaticProps() {
   try {
-    const query = `*[_type == "review"] | order(_createdAt desc) [0..5]`
+    const query = `*[_type == "review"] | order(_createdAt desc) [0..5]{
+      _id,
+      author,
+      quote,
+      event_type,
+      rating,
+      "imageUrl": image.asset->url
+    }`
     const reviews = await client.fetch(query)
-    
     return {
       props: {
         reviews: reviews || []

@@ -19,7 +19,7 @@ export default function QuickContactForm() {
       formData.append('name', name)
       formData.append('phone', phone)
 
-      const res = await fetch('https://script.google.com/macros/s/AKfycbzQpCG1gTn3dafUlC5IIM-oH8x2ADkLUkYgREskf2y9AhBJnYScOus7MkkhqBgBJtx9Qw/exec', {
+      const res = await fetch('https://script.google.com/macros/s/AKfycbzqJBBdObABi5VzG7gb4G15YBQDcxGi7g8ulEpiRuWArTMgA-B-vV053Lkia9chG_Q6Mg/exec', {
         method: 'POST',
         body: formData,
       })
@@ -96,7 +96,7 @@ export default function QuickContactForm() {
                 </button>
 
                 <a
-                  href={`https://wa.me/972501234567?text=שלום%20אני%20מעוניין%20בפרטים%20על%20האטרקציות`}
+                  href="https://wa.me/972523351678?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%2C%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%20%D7%A9%D7%9C%D7%A0%D7%95%20%3F"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group relative px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white font-black text-xs sm:text-sm rounded-lg sm:rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 overflow-hidden flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap"

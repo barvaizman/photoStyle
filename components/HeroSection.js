@@ -45,7 +45,7 @@ export default function HeroSection() {
         ))}
         
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/80 via-pink-600/60 to-orange-600/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/40 via-pink-600/30 to-orange-600/40"></div>
       </div>
 
       {/* Content */}
@@ -86,7 +86,7 @@ export default function HeroSection() {
             </Link>
 
             <a
-              href="tel:+972501234567"
+              href="tel:+972523351678"
               className="group relative px-4 sm:px-5 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 text-white font-bold text-sm sm:text-base rounded-xl shadow-xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-500 overflow-hidden border-2 border-white/20 backdrop-blur-sm flex items-center justify-center gap-2"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -96,7 +96,7 @@ export default function HeroSection() {
             </a>
 
             <a
-              href={`https://wa.me/972501234567?text=שלום%20אני%20מעוניין%20בפרטים%20על%20האטרקציות`}
+              href={`https://wa.me/972523351678?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%2C%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%20%D7%A9%D7%9C%D7%A0%D7%95%20%3F`}
               target="_blank"
               rel="noopener noreferrer"
               className="group relative px-4 sm:px-5 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-500 via-green-600 to-green-700 text-white font-bold text-sm sm:text-base rounded-xl shadow-xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-500 overflow-hidden border-2 border-white/20 backdrop-blur-sm flex items-center justify-center gap-2"

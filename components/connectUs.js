@@ -21,7 +21,7 @@ export default function ConnectUs() {
           </Link>
 
           <a
-            href="tel:0523351678"
+            href="tel:+972523351678"
             className="group relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg sm:rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 overflow-hidden"
           >
             <FaPhone className="text-sm sm:text-lg group-hover:scale-110 transition-transform duration-300" />

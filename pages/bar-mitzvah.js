@@ -195,7 +195,7 @@ export default function BarMitzvah() {
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <a
-                      href="https://wa.me/972501234567?text=שלום%20אני%20מעוניין%20באטרקציות%20לבר/ת%20מצווה"
+                      href="https://wa.me/972523351678?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%2C%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%20%D7%A9%D7%9C%D7%A0%D7%95%20%3F"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group flex items-center justify-center gap-3 px-8 py-4 bg-green-600 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300"
@@ -204,7 +204,7 @@ export default function BarMitzvah() {
                       <span>קבל הצעה לבר/ת מצווה</span>
                     </a>
                     <a
-                      href="tel:+972501234567"
+                      href="tel:+972523351678"
                       className="group flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300"
                     >
                       <FaMagic className="w-5 h-5" />
@@ -300,7 +300,7 @@ export default function BarMitzvah() {
             
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
               <a
-                href="https://wa.me/972501234567?text=שלום%20אני%20מעוניין%20באטרקציות%20לבר/ת%20מצווה"
+                href="https://wa.me/972523351678?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%2C%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%20%D7%A9%D7%9C%D7%A0%D7%95%20%3F"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center justify-center gap-3 px-8 py-4 bg-green-600 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300"
@@ -321,6 +321,19 @@ export default function BarMitzvah() {
             </div>
           </div>
         </section>
+
+        <div className="mt-12 text-center">
+          <p className="text-xl md:text-2xl text-gray-300 mb-6">מצאתם את מה שחיפשתם? רוצים לשמוע עוד?</p>
+          <a
+            href="https://wa.me/972523351678?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%2C%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%20%D7%A9%D7%9C%D7%A0%D7%95%20%3F"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center justify-center gap-3 px-8 py-4 bg-green-600 text-white font-bold rounded-full text-lg hover:bg-green-700 transition-all duration-300 w-fit mx-auto shadow-lg"
+          >
+            <FaWhatsapp className="w-5 h-5" />
+            <span>ווטסאפ</span>
+          </a>
+        </div>
       </div>
     </>
   )

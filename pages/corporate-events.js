@@ -179,11 +179,11 @@ export default function CorporateEvents() {
                     אנו מתאימים את האטרקציות ופתרונות הצילום למטרות האירוע, בין אם מדובר בכנס מקצועי, אירוע השקה או יום גיבוש לעובדים.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <a href="https://wa.me/972501234567?text=שלום%20אני%20מעוניין%20באטרקציות%20לאירוע%20חברה" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 px-8 py-4 bg-green-600 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+                    <a href="https://wa.me/972523351678?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%2C%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%20%D7%A9%D7%9C%D7%A0%D7%95%20%3F" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 px-8 py-4 bg-green-600 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
                       <FaWhatsapp className="w-5 h-5" />
                       <span>קבל הצעת מחיר</span>
                     </a>
-                    <a href="tel:+972501234567" className="group flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-800 to-gray-600 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+                    <a href="tel:+972523351678" className="group flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-800 to-gray-600 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
                       <FaMagic className="w-5 h-5" />
                       <span>התקשר עכשיו</span>
                     </a>
@@ -248,16 +248,16 @@ export default function CorporateEvents() {
         <section className="py-16 sm:py-20 bg-gradient-to-r from-blue-900 via-gray-800 to-black">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 sm:mb-8">
-              מוכנים לשדרג את האירוע הבא?
+              מוכנים לשדרג את האירוע שלכם?
             </h2>
             <p className="text-lg sm:text-xl text-white/90 mb-8 sm:mb-12 max-w-2xl mx-auto">
-              צרו קשר לקבלת הצעה מותאמת אישית לאירוע החברה שלכם.
+              צרו קשר עוד היום וקבלו הצעת מחיר מותאמת אישית לאירוע חברה בלתי נשכח.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-              <a href="https://wa.me/972501234567?text=שלום%20אני%20מעוניין%20באטרקציות%20לאירוע%20חברה" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 px-8 py-4 bg-green-600 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+              <a href="https://wa.me/972523351678?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%2C%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%20%D7%A9%D7%9C%D7%A0%D7%95%20%3F" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 px-8 py-4 bg-green-600 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
                 <FaWhatsapp className="w-5 h-5" />
-                <span>דברו איתנו בוואטסאפ</span>
+                <span>דברו איתנו</span>
               </a>
               <a href="https://instagram.com/Photostyle.il" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-3 px-8 py-4 bg-white text-blue-800 font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
                 <FaInstagram className="w-5 h-5" />

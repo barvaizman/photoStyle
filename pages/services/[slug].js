@@ -343,7 +343,7 @@ export default function ServicePage({ service }) {
                     <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </button>
                 </Link>
-                <a href="https://wa.me/972501234567" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/972523351678?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%2C%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%20%D7%A9%D7%9C%D7%A0%D7%95%20%3F" target="_blank" rel="noopener noreferrer">
                   <button className="group relative px-8 sm:px-12 py-4 sm:py-6 bg-green-500 text-white font-black text-lg sm:text-xl rounded-xl sm:rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden">
                     <FaWhatsapp className="inline-block ml-2 group-hover:scale-110 transition-transform duration-300" />
                     <span className="relative z-10">ווטסאפ</span>
@@ -599,7 +599,7 @@ export default function ServicePage({ service }) {
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-100 to-pink-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </button>
               </Link>
-              <a href="https://wa.me/972501234567" target="_blank" rel="noopener noreferrer" className="w-full">
+              <a href="https://wa.me/972523351678?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%2C%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%20%D7%A9%D7%9C%D7%A0%D7%95%20%3F" target="_blank" rel="noopener noreferrer" className="w-full">
                 <button className="group relative w-full px-6 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 bg-green-500 text-white font-black text-base sm:text-lg md:text-xl rounded-lg sm:rounded-xl md:rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden">
                   <FaWhatsapp className="inline-block ml-2 group-hover:scale-110 transition-transform duration-300" />
                   <span className="relative z-10">ווטסאפ</span>

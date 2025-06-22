@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FaArrowRight } from 'react-icons/fa'
 import ConnectUs from '../../components/connectUs'
+import Card from '../../components/Card'
 
 export async function getStaticPaths() {
   const data = await client.fetch(`*[_type == "attraction" && defined(slug.current)]{ slug }`)
@@ -16,6 +17,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const attraction = await client.fetch(`*[_type == "attraction" && slug.current == $slug][0]{
+    _id,
     title,
     shortDescription,
     richDescription,
@@ -28,18 +30,30 @@ export async function getStaticProps({ params }) {
 
   let related = []
   if (attraction?.familyId) {
-    related = await client.fetch(`*[_type == "attraction" && references($familyId) && slug.current != $slug]{
+    related = await client.fetch(`*[_type == "attraction" && references($familyId) && _id != $attractionId][0...5]{
       title,
       slug,
       mainImage { asset->{url} }
     }`, {
       familyId: attraction.familyId,
-      slug: params.slug,
+      attractionId: attraction._id
     })
   }
 
+  // Fetch packages that include this attraction
+  let includedPackages = []
+  if (attraction) {
+    includedPackages = await client.fetch(`*[_type == "eventPackage" && references($attractionId)]{
+      title,
+      slug,
+      shortDescription,
+      price,
+      mainImage { asset->{url} }
+    }`, { attractionId: attraction._id })
+  }
+
   if (!attraction) return { notFound: true }
-  return { props: { attraction: { ...attraction, related } }, revalidate: 60 }
+  return { props: { attraction: { ...attraction, related, includedPackages } }, revalidate: 60 }
 }
 
 export default function AttractionPage({ attraction }) {
@@ -50,6 +64,7 @@ export default function AttractionPage({ attraction }) {
     mainImage,
     gallery,
     related,
+    includedPackages,
   } = attraction
 
   const validGallery = Array.isArray(gallery) ? gallery : []
@@ -156,6 +171,50 @@ export default function AttractionPage({ attraction }) {
           <PortableText value={richDescription} components={components} />
         </div>
 
+        {/* חבילות כלולות */}
+        {includedPackages?.length > 0 && (
+          <section className="relative py-12 sm:py-16 md:py-20 px-3 sm:px-4 md:px-6 bg-gradient-to-b from-orange-50 via-pink-50 to-purple-50 mt-12 sm:mt-16 md:mt-20">
+            <div className="max-w-7xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="text-center mb-12"
+              >
+                <div className="flex items-center justify-center mb-4">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600">
+                    חבילות כלולות
+                  </h2>
+                </div>
+                <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+                  האטרקציה הזו כלולה בחבילות הבאות - בדקו אותן!
+                </p>
+              </motion.div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
+                {includedPackages.map((pkg, index) => (
+                  <Card
+                    key={pkg.slug?.current || index}
+                    linkTo={`/packages/${pkg.slug?.current || pkg._id}`}
+                    imageUrl={pkg.mainImage?.asset?.url}
+                    title={pkg.title}
+                    price={pkg.price}
+                    description={pkg.shortDescription}
+                    imageContainerClassName="relative h-32 sm:h-48 md:h-56 overflow-hidden"
+                    motionProps={{
+                      initial: { opacity: 0, y: 30 },
+                      whileInView: { opacity: 1, y: 0 },
+                      transition: { duration: 0.6, delay: index * 0.1 },
+                      viewport: { once: true }
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* אטרקציות דומות */}
         {related?.length > 0 && (
           <section className="relative py-12 sm:py-16 md:py-20 px-3 sm:px-4 md:px-6 bg-gradient-to-b from-[#7e28f2] via-[#d400a7] to-[#ff6b00] mt-12 sm:mt-16 md:mt-20">
@@ -168,24 +227,14 @@ export default function AttractionPage({ attraction }) {
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5 max-w-7xl mx-auto">
                 {related.map((item) => (
-                  <Link
+                  <Card
                     key={item.slug.current}
-                    href={`/attractions/${item.slug.current}`}
-                    className="relative group rounded-lg sm:rounded-xl shadow-xl overflow-hidden transition hover:scale-105 bg-white"
-                  >
-                    <Image
-                      src={item.mainImage.asset.url}
-                      alt={item.title}
-                      width={400}
-                      height={400}
-                      className="object-cover w-full h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48"
-                    />
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 flex items-center justify-center transition">
-                      <h4 className="text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold text-center px-2 drop-shadow-2xl">
-                        {item.title}
-                      </h4>
-                    </div>
-                  </Link>
+                    linkTo={`/attractions/${item.slug.current}`}
+                    imageUrl={item.mainImage?.asset.url}
+                    title={item.title}
+                    containerClassName="relative group rounded-lg sm:rounded-xl shadow-xl overflow-hidden transition hover:scale-105 bg-white h-full"
+                    imageContainerClassName="relative w-full h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48"
+                  />
                 ))}
               </div>
             </div>

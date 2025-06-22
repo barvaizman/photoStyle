@@ -2,9 +2,9 @@
 
 import { client } from '../../lib/sanity/client';
 import Head from 'next/head';
-import Link from 'next/link';
-import ConnectUs from '../../components/connectUs';
 import { motion } from 'framer-motion';
+import ConnectUs from '../../components/connectUs';
+import Card from '../../components/Card';
 
 export default function Packages({ packages }) {
 
@@ -67,45 +67,34 @@ export default function Packages({ packages }) {
 
                     {packages && packages.length > 0 ? (
                         <motion.div
-                            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6 md:gap-8"
+                            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8"
                             variants={containerVariants}
                             initial="hidden"
                             animate="visible"
                         >
-                            {packages.map((pack) => (
-                                <Link key={pack.slug.current} href={`/packages/${pack.slug.current}`} passHref>
-                                    <motion.div
-                                        variants={itemVariants}
-                                        className="group bg-white/60 backdrop-blur-md rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105 h-64 sm:h-72 md:h-80"
-                                    >
-                                        <div className="relative h-40 sm:h-48 md:h-56">
-                                            {pack.mainImage?.asset?.url ? (
-                                                <img src={pack.mainImage.asset.url} alt={pack.title} className="w-full h-full object-cover" />
-                                            ) : (
-                                                <div className="w-full h-full bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center">
-                                                    <span className="text-purple-600 font-bold text-sm">אין תמונה</span>
-                                                </div>
-                                            )}
-                                            
-                                            {/* Title overlay on image */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-center justify-center">
-                                                <h3 className="text-white font-black text-lg sm:text-xl md:text-2xl text-center px-3 leading-tight drop-shadow-lg">
-                                                    {pack.title}
-                                                </h3>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="p-4 sm:p-6 h-24 sm:h-24 flex items-center justify-center">
-                                            <div className="text-center">
-                                                <p className="text-xl sm:text-2xl md:text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500">
-                                                    ₪{pack.price?.toLocaleString()}
-                                                </p>
-                                                <div className="w-12 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto mt-2 rounded-full"></div>
-                                            </div>
-                                        </div>
-                                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-purple-400 rounded-xl transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(192,132,252,0.8)]"></div>
-                                    </motion.div>
-                                </Link>
+                            {packages.map((pack, idx) => (
+                                <Card
+                                    key={pack.slug}
+                                    linkTo={`/packages/${pack.slug}`}
+                                    variant="package"
+                                    imageUrl={pack.imageUrl}
+                                    title={pack.title}
+                                    containerClassName="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+                                    imageContainerClassName="relative w-full aspect-[4/3] overflow-hidden"
+                                    titleClassName="text-white text-3xl lg:text-4xl font-black text-center drop-shadow-[0_3px_5px_rgba(0,0,0,0.8)]"
+                                    motionProps={{
+                                        variants: itemVariants,
+                                        initial: 'hidden',
+                                        animate: 'visible',
+                                        transition: { duration: 0.5, delay: idx * 0.08 },
+                                    }}
+                                >
+                                    <div className="p-4 text-center">
+                                        <p className="text-xl sm:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500">
+                                            ₪{pack.price?.toLocaleString()}
+                                        </p>
+                                    </div>
+                                </Card>
                             ))}
                         </motion.div>
                     ) : (
@@ -126,10 +115,9 @@ export async function getStaticProps() {
     try {
         const query = `*[_type == "eventPackage"]{
             title,
-            richDescription,
             price,
-            slug,
-            mainImage { asset->{ url } }
+            "slug": slug.current,
+            "imageUrl": mainImage.asset->url
         }`;
 
         const packages = await client.fetch(query);

@@ -46,7 +46,7 @@ export default function PackagePage({ pkg, morePackages }) {
   const { title, price, mainImage, richDescription, attractions } = pkg;
   const [currentImage, setCurrentImage] = useState(0);
 
-  const galleryImages = attractions.flatMap((a) => [a.mainImage, ...(a.gallery || [])]);
+  const galleryImages = attractions ? attractions.flatMap((a) => [a.mainImage, ...(a.gallery || [])].filter(Boolean)) : [];
 
   const components = {
     block: {
@@ -103,7 +103,7 @@ export default function PackagePage({ pkg, morePackages }) {
 
         <div className="w-full">
           <div className="flex flex-wrap justify-center gap-4">
-            {attractions.map((a, i) => (
+            {attractions && attractions.map((a, i) => (
               <Link
                 key={i}
                 href={`/attractions/${a.slug.current}`}

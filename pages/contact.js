@@ -6,9 +6,7 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    email: '',
     eventType: '',
-    eventDate: '',
     message: ''
   })
   const [loading, setLoading] = useState(false)
@@ -19,18 +17,29 @@ export default function Contact() {
     setLoading(true)
 
     try {
-      // Here you would typically send to Google Sheets
-      // For now, we'll simulate the submission
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      setSuccess(true)
-      setFormData({
-        name: '',
-        phone: '',
-        email: '',
-        eventType: '',
-        eventDate: '',
-        message: ''
+      const data = new FormData();
+      data.append('name', formData.name);
+      data.append('phone', formData.phone);
+      data.append('eventType', formData.eventType);
+      data.append('message', formData.message);
+
+      const res = await fetch('https://script.google.com/macros/s/AKfycbzqJBBdObABi5VzG7gb4G15YBQDcxGi7g8ulEpiRuWArTMgA-B-vV053Lkia9chG_Q6Mg/exec', {
+        method: 'POST',
+        body: data,
       })
+
+      if (res.ok) {
+        setSuccess(true)
+        setFormData({
+          name: '',
+          phone: '',
+          eventType: '',
+          message: ''
+        })
+      } else {
+        console.error('Error submitting form to Google Sheets');
+        // Optionally, add some user-facing error message here
+      }
     } catch (error) {
       console.error('Error submitting form:', error)
     } finally {
@@ -127,44 +136,20 @@ export default function Contact() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">אימייל</label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
+                      <label className="block text-sm font-bold text-gray-700 mb-2">סוג אירוע</label>
+                      <select
+                        name="eventType"
+                        value={formData.eventType}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-300"
-                        placeholder="הכנס כתובת אימייל"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">סוג אירוע</label>
-                        <select
-                          name="eventType"
-                          value={formData.eventType}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-300"
-                        >
-                          <option value="">בחר סוג אירוע</option>
-                          <option value="חתונה">חתונה</option>
-                          <option value="בר/ת מצווה">בר/ת מצווה</option>
-                          <option value="אירוע חברה">אירוע חברה</option>
-                          <option value="יום הולדת">יום הולדת</option>
-                          <option value="אחר">אחר</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">תאריך אירוע</label>
-                        <input
-                          type="date"
-                          name="eventDate"
-                          value={formData.eventDate}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-300"
-                        />
-                      </div>
+                      >
+                        <option value="">בחר סוג אירוע</option>
+                        <option value="חתונה">חתונה</option>
+                        <option value="בר/ת מצווה">בר/ת מצווה</option>
+                        <option value="אירוע חברה">אירוע חברה</option>
+                        <option value="יום הולדת">יום הולדת</option>
+                        <option value="אחר">אחר</option>
+                      </select>
                     </div>
 
                     <div>
@@ -175,7 +160,7 @@ export default function Contact() {
                         onChange={handleChange}
                         rows="4"
                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-300 resize-none"
-                        placeholder="ספרו לנו על האירוע שלכם..."
+                        placeholder="באילו אטרקציות אתם מתעניינים?"
                       ></textarea>
                     </div>
 
@@ -209,11 +194,11 @@ export default function Contact() {
                     <p className="text-gray-600 mb-8 max-w-lg mx-auto">נשמח לשמוע מכם! מלאו את הטופס או השתמשו באחת הדרכים ליצירת קשר מהיר.</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                        <a href="https://wa.me/972501234567" target="_blank" rel="noopener noreferrer" className="bg-green-100 text-green-800 p-4 rounded-lg flex items-center justify-center space-x-2 space-x-reverse hover:bg-green-200 transition-colors">
+                        <a href="https://wa.me/972523351678?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%2C%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2%20%D7%A9%D7%9C%D7%A0%D7%95%20%3F" target="_blank" rel="noopener noreferrer" className="bg-green-100 text-green-800 p-4 rounded-lg flex items-center justify-center space-x-2 space-x-reverse hover:bg-green-200 transition-colors">
                             <FaWhatsapp className="w-6 h-6" />
                             <span className="font-semibold">דברו איתנו בווטסאפ</span>
                         </a>
-                        <a href="tel:+972501234567" className="bg-blue-100 text-blue-800 p-4 rounded-lg flex items-center justify-center space-x-2 space-x-reverse hover:bg-blue-200 transition-colors">
+                        <a href="tel:+972523351678" className="bg-blue-100 text-blue-800 p-4 rounded-lg flex items-center justify-center space-x-2 space-x-reverse hover:bg-blue-200 transition-colors">
                             <FaPhone className="w-5 h-5" />
                             <span className="font-semibold">התקשרו אלינו</span>
                         </a>
@@ -235,7 +220,7 @@ export default function Contact() {
                       </div>
                       <div>
                         <div className="font-bold text-gray-900">טלפון</div>
-                        <div className="text-gray-600">050-123-4567</div>
+                        <div className="text-gray-600">+972523351678</div>
                       </div>
                     </div>
 
@@ -245,7 +230,7 @@ export default function Contact() {
                       </div>
                       <div>
                         <div className="font-bold text-gray-900">אימייל</div>
-                        <div className="text-gray-600">info@photostyle.co.il</div>
+                        <div className="text-gray-600">photostyle38@gmail.com</div>
                       </div>
                     </div>
 
@@ -255,7 +240,7 @@ export default function Contact() {
                       </div>
                       <div>
                         <div className="font-bold text-gray-900">כתובת</div>
-                        <div className="text-gray-600">תל אביב, ישראל</div>
+                        <div className="text-gray-600">ראשון לציון</div>
                       </div>
                     </div>
 
@@ -264,8 +249,8 @@ export default function Contact() {
                         <FaClock className="w-5 h-5" />
                       </div>
                       <div>
-                        <div className="font-bold text-gray-900">שעות פעילות</div>
-                        <div className="text-gray-600">א'-ה' 9:00-19:00</div>
+                        <div className="font-bold text-gray-900">שעות פתיחה</div>
+                        <div className="text-gray-600">תמיד</div>
                       </div>
                     </div>
                   </div>

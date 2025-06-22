@@ -119,7 +119,7 @@ export default function AdditionalServices() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
         >
           {services.map((service, index) => {
             const Icon = service.icon
@@ -127,30 +127,30 @@ export default function AdditionalServices() {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="group relative bg-white rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 overflow-hidden border border-gray-100 hover:border-purple-200"
+                className="group relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 overflow-hidden border border-gray-100 hover:border-purple-200 h-full flex flex-col"
               >
-                <Link href={`/services/${service.slug}`} className="block">
+                <Link href={`/services/${service.slug}`} className="block h-full flex flex-col">
                   {/* Background gradient on hover */}
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
                   {/* Icon */}
-                  <div className="relative z-10 mb-6">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-500">
-                      <Icon className="w-8 h-8 sm:w-10 sm:h-10" />
+                  <div className="relative z-10 mb-4 sm:mb-6 flex-shrink-0">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 rounded-xl sm:rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-500">
+                      <Icon className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                     </div>
                   </div>
 
                   {/* Content */}
-                  <div className="relative z-10">
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-purple-600 transition-colors duration-300">
+                  <div className="relative z-10 flex-grow flex flex-col">
+                    <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-purple-600 transition-colors duration-300 flex-shrink-0">
                       {service.title}
                     </h3>
-                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4">
+                    <p className="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed mb-4 flex-grow">
                       {service.description}
                     </p>
                     {service.price && (
-                      <div className="text-right">
-                        <span className="text-lg sm:text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500">
+                      <div className="text-right mt-auto flex-shrink-0">
+                        <span className="text-sm sm:text-base md:text-lg lg:text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500">
                           החל מ־₪{service.price}
                         </span>
                       </div>
@@ -158,11 +158,11 @@ export default function AdditionalServices() {
                   </div>
 
                   {/* Floating elements */}
-                  <div className="absolute top-4 right-4 w-2 h-2 bg-purple-400 rounded-full opacity-0 group-hover:opacity-70 animate-ping"></div>
-                  <div className="absolute bottom-4 left-4 w-1.5 h-1.5 bg-pink-400 rounded-full opacity-0 group-hover:opacity-70 animate-ping delay-300"></div>
+                  <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-purple-400 rounded-full opacity-0 group-hover:opacity-70 animate-ping"></div>
+                  <div className="absolute bottom-2 left-2 w-1 h-1 bg-pink-400 rounded-full opacity-0 group-hover:opacity-70 animate-ping delay-300"></div>
                   
                   {/* Hover glow effect */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
+                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
                 </Link>
               </motion.div>
             )
